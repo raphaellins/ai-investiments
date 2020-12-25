@@ -1,40 +1,26 @@
+
 #property copyright "Raphael lins"
 #property link      "https://pisoms.com"
 #property version   "1.00"
 #property indicator_chart_window
 
-string account_name;
-string owner_name = "Raphael lins araujo";
-
-enum accounts_{
-   account_clear = 100876651, //100876651
-   account_test = 100876652   //100876652
-};
-
-
-input accounts_ InputConta = account_clear;
-
 int OnInit()
   {
 
-  account_name = AccountInfoString(ACCOUNT_NAME);
+  int file = FileOpen("FileTest.txt", FILE_COMMON|FILE_TXT|FILE_REWRITE);
 
+  string file_content = FileReadString(file);
 
-  if( account_name != owner_name){
-      Alert("Wrong user");
-  }
+  Print(file_content);
 
+  FileWrite(file, "Line 1")
+  FileWrite(file, "Line 2");
+  FileWrite(file, "Line 3");
 
-  //verify the account number
-  if (AccountInfoInteger(ACCOUNT_LOGIN) != InputConta){
-      Alert("Invalid user");
-
-      return(INIT_FAILED);
-  }
+  FileClose(file);
 
    return(INIT_SUCCEEDED);
   }
-
 
 int OnCalculate(const int rates_total,
                 const int prev_calculated,
