@@ -44,7 +44,6 @@ request = {
 }
 
 result = mt5.order_send(request)
-print(f"1. order send: {lot} of {symbol} with price:{price}")
 
 if result.retcode != mt5.TRADE_RETCODE_DONE:
     print("2. order send failed, retcode={}".format(result.retcode))
