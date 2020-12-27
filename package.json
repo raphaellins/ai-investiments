@@ -1,0 +1,8 @@
+{
+  "name": "ai-investiments",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/raphaellins/ai-investiments.git",
+  "author": "Raphael lins <raphalinns@gmail.com>",
+  "license": "MIT"
+}
