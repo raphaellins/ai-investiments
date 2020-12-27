@@ -9,15 +9,25 @@ const insertRate = (req: Request, res: Response) => {
     return badRequest(res, "Invalid Rates");
   }
 
-  if (!(parseFloat(rate.value) > 0)) {
-    return badRequest(res, "Invalid Rate Value");
+  if (
+    !isValidValue(rate.open) ||
+    !isValidValue(rate.high) ||
+    !isValidValue(rate.low) ||
+    !isValidValue(rate.close) ||
+    !isValidValue(rate.tickVolume) ||
+    !isValidValue(rate.spread) ||
+    !isValidValue(rate.realVolume)
+  ) {
+    return badRequest(res, `Invalid Resource ${rate}`);
   }
 
   if (!rate.log) {
     return badRequest(res, "Invalid log");
   }
 
-  console.log("Rate to record:", rate);
+  if (!rate.time) {
+    return badRequest(res, "Invalid time");
+  }
 
   rateModel
     .insertRate(rate)
@@ -52,6 +62,10 @@ const deleteRate = (req: Request, res: Response) => {
   res.json({
     result: "Deleted",
   });
+};
+
+const isValidValue = (value: number): boolean => {
+  return value != null && parseFloat(value.toString()) > 0;
 };
 
 export const rateController = {

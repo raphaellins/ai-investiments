@@ -1,15 +1,32 @@
 import { dbQuery } from "../services/database";
 
 export type Rate = {
-  value: number;
   log: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  tickVolume: number;
+  spread: number;
+  realVolume: number;
+  time: string;
 };
 
 const insertRate = async (rate: Rate) => {
-  await dbQuery(`INSERT INTO rates (value, log) VALUES (?,?)`, [
-    rate.value,
-    rate.log,
-  ]);
+  await dbQuery(
+    `INSERT INTO rates (log, open, high, low, close, tick_volume, spread, real_volume, time) VALUES (?,?)`,
+    [
+      rate.log,
+      rate.open,
+      rate.high,
+      rate.low,
+      rate.close,
+      rate.tickVolume,
+      rate.spread,
+      rate.realVolume,
+      rate.time,
+    ]
+  );
 
   let rates = await dbQuery(
     `SELECT seq FROM sqlite_sequence WHERE name = 'rates'`
