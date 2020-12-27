@@ -7,17 +7,24 @@ if (!DATABASE_FILE) {
 }
 
 export const openConnection = () => {
-  let database = new sqlite3.Database(DATABASE_FILE);
+  let database = new sqlite3.Database("./main.db", (err) => {
+    if (err) {
+      return console.error("Error on open database: ", err.message);
+    }
+    console.log(`Connected to the ${DATABASE_FILE} SQlite database.`);
+  });
   return database;
 };
 
 export const dbQuery = (query: string, params?: any[]): Promise<any[]> => {
   let database = openConnection();
-  console.log(database);
+
   return new Promise<any[]>((resolve, reject) => {
     database.all(query, params, (err, rows) => {
+      console.log(query, params, err);
       if (err) {
         reject(err);
+        console.log(err);
       } else {
         resolve(rows);
       }

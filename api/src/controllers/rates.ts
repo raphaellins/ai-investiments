@@ -3,21 +3,21 @@ import { Rate, rateModel } from "../models/Rates";
 import { badRequest, internalServerError } from "../services/utils";
 
 const insertRate = (req: Request, res: Response) => {
-  {
-    const rate = req.body;
+  const rate: Rate = req.body;
 
-    if (!rate) {
-      return badRequest(res, "Invalid Rates");
-    }
-
-    if (!(parseFloat(rate.value) > 0)) {
-      return badRequest(res, "Invalid Rate Value");
-    }
+  if (!rate) {
+    return badRequest(res, "Invalid Rates");
   }
 
-  const rate = req.body as Rate;
+  if (!(parseFloat(rate.value) > 0)) {
+    return badRequest(res, "Invalid Rate Value");
+  }
 
-  console.log(rate);
+  if (!rate.log) {
+    return badRequest(res, "Invalid log");
+  }
+
+  console.log("Rate to record:", rate);
 
   rateModel
     .insertRate(rate)
@@ -29,6 +29,33 @@ const insertRate = (req: Request, res: Response) => {
     });
 };
 
+const findAllRate = (req: Request, res: Response) => {
+  rateModel
+    .findAllRates()
+    .then((rates: Rate[]) => {
+      res.json(rates);
+    })
+    .catch((err) => {
+      internalServerError(res, err);
+    });
+};
+
+const deleteRate = (req: Request, res: Response) => {
+  const id: string = req.params.id;
+
+  if (!id) {
+    badRequest(res, "Inform the resource (id)");
+  }
+
+  rateModel.deleteRate(Number(id));
+
+  res.json({
+    result: "Deleted",
+  });
+};
+
 export const rateController = {
   insertRate,
+  findAllRate,
+  deleteRate,
 };
